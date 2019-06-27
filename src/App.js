@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Navbar from './components/Navbar';
 import SearchBar from './components/SearchBar';
 import RoboCardList from './components/RoboCardList';
-import NotFound from './components/404';
+import Loading from './components/Loading';
 
 class App extends Component {
   state = {
@@ -13,7 +13,7 @@ class App extends Component {
   componentDidMount() {
     fetch('https://jsonplaceholder.typicode.com/users')
       .then(res => res.json())
-      .then(data => this.setState({ robots: data }))
+      .then(data => this.setState([]))
       .catch(err => console.error(err));
   }
 
@@ -34,7 +34,7 @@ class App extends Component {
         <Navbar />
         <SearchBar onSearchChange={this.onSearchChange} />
         {!this.state.robots.length ? (
-          <NotFound />
+          <Loading />
         ) : (
           <RoboCardList robots={filterRobots} />
         )}
