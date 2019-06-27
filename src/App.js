@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
+import Navbar from './components/Navbar';
+import SearchBar from './components/SearchBar';
+import RoboCard from './components/RoboCard';
 
 class App extends Component {
   render() {
     return (
       <div>
-        <h1>Hello World</h1>
+        <Navbar />
+        <SearchBar />
+        <RoboCard />
       </div>
     );
   }
