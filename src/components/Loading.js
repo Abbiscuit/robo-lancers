@@ -15,7 +15,7 @@ class Loading extends React.Component {
   render() {
     return (
       <div className="center">
-        <h2>Loading now...</h2>
+        <h2>Now loading...</h2>
         <BeatLoader
           style={override}
           sizeUnit={'px'}

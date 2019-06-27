@@ -13,7 +13,7 @@ class App extends Component {
   componentDidMount() {
     fetch('https://jsonplaceholder.typicode.com/users')
       .then(res => res.json())
-      .then(data => this.setState([]))
+      .then(data => this.setState({ robots: data }))
       .catch(err => console.error(err));
   }
 

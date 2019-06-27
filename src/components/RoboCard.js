@@ -1,13 +1,13 @@
 import React from 'react';
 
 const cardStyle = {
-  fontSize: '2rem',
+  fontSize: '1rem',
   fontWeight: 'bold'
 };
 
 const RoboCard = ({ robot }) => {
   return (
-    <div className="col s12 m6 l4">
+    <div className="col s12 m6 l3">
       <div className="card">
         <div className="card-image">
           <img
