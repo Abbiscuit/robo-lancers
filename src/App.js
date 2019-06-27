@@ -1,15 +1,43 @@
 import React, { Component } from 'react';
 import Navbar from './components/Navbar';
 import SearchBar from './components/SearchBar';
-import RoboCard from './components/RoboCard';
+import RoboCardList from './components/RoboCardList';
+import NotFound from './components/404';
 
 class App extends Component {
+  state = {
+    robots: [],
+    searchField: ''
+  };
+
+  componentDidMount() {
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(res => res.json())
+      .then(data => this.setState({ robots: data }))
+      .catch(err => console.error(err));
+  }
+
+  onSearchChange = e => {
+    this.setState({
+      searchField: e.target.value
+    });
+  };
+
   render() {
+    const filterRobots = this.state.robots.filter(robot => {
+      return robot.name
+        .toLowerCase()
+        .includes(this.state.searchField.toLowerCase());
+    });
     return (
       <div>
         <Navbar />
-        <SearchBar />
-        <RoboCard />
+        <SearchBar onSearchChange={this.onSearchChange} />
+        {!this.state.robots.length ? (
+          <NotFound />
+        ) : (
+          <RoboCardList robots={filterRobots} />
+        )}
       </div>
     );
   }
