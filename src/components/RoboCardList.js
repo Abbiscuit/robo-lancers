@@ -2,7 +2,6 @@ import React from 'react';
 import RoboCard from './RoboCard';
 
 const RoboCardList = ({ robots }) => {
-  console.log(robots);
   {
     return !robots.length ? (
       <div className="center">

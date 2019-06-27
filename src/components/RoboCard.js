@@ -7,7 +7,7 @@ const cardStyle = {
 
 const RoboCard = ({ robot }) => {
   return (
-    <div className="col s12 m6 l3">
+    <div className="col s12 m6 l4">
       <div className="card">
         <div className="card-image">
           <img
