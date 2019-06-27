@@ -29,6 +29,7 @@ class App extends Component {
         .toLowerCase()
         .includes(this.state.searchField.toLowerCase());
     });
+
     return (
       <div>
         <Navbar />
