@@ -4,10 +4,24 @@ import SearchBar from '../components/SearchBar';
 import RoboCardList from '../components/RoboCardList';
 import Loading from '../components/Loading';
 
+import { setSearchField } from '../actions';
+import { connect } from 'react-redux';
+
+const mapStateToProps = state => {
+  return {
+    searchField: state.searchField
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onSearchChange: event => dispatch(setSearchField(event.target.value))
+  };
+};
+
 class App extends Component {
   state = {
-    robots: [],
-    searchField: ''
+    robots: []
   };
 
   componentDidMount() {
@@ -17,23 +31,16 @@ class App extends Component {
       .catch(err => console.error(err));
   }
 
-  onSearchChange = e => {
-    this.setState({
-      searchField: e.target.value
-    });
-  };
-
   render() {
-    const filterRobots = this.state.robots.filter(robot => {
-      return robot.name
-        .toLowerCase()
-        .includes(this.state.searchField.toLowerCase());
+    const { onSearchChange, searchField } = this.props;
+    const { robots } = this.state;
+    const filterRobots = robots.filter(robot => {
+      return robot.name.toLowerCase().includes(searchField.toLowerCase());
     });
-
     return (
       <div>
         <Navbar />
-        <SearchBar onSearchChange={this.onSearchChange} />
+        <SearchBar onSearchChange={onSearchChange} />
         {!this.state.robots.length ? (
           <Loading />
         ) : (
@@ -44,4 +51,7 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
