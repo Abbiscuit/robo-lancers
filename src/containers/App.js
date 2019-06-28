@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Navbar from '../components/Navbar';
 import SearchBar from '../components/SearchBar';
 import RoboCardList from '../components/RoboCardList';
 import Loading from '../components/Loading';
@@ -39,7 +38,6 @@ class App extends Component {
     });
     return (
       <div>
-        <Navbar />
         <SearchBar onSearchChange={onSearchChange} />
         {isPending ? <Loading /> : <RoboCardList robots={filterRobots} />}
       </div>

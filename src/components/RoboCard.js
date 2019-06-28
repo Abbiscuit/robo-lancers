@@ -1,4 +1,5 @@
 import React from 'react';
+import Robo from './Robo';
 
 const cardStyle = {
   fontSize: '1rem',
@@ -21,6 +22,7 @@ const RoboCard = ({ robot }) => {
         </div>
         <div className="card-action ">
           <span className="btn waves-effect waves-light red">More...</span>
+          <Link to={`/robo/${robo.id}`}>jump</Link>
         </div>
       </div>
     </div>
