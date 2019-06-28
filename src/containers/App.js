@@ -4,18 +4,22 @@ import SearchBar from '../components/SearchBar';
 import RoboCardList from '../components/RoboCardList';
 import Loading from '../components/Loading';
 
-import { setSearchField } from '../actions';
+import { setSearchField, requestRobots } from '../actions';
 import { connect } from 'react-redux';
 
 const mapStateToProps = state => {
   return {
-    searchField: state.searchField
+    searchField: state.searchRobots.searchField,
+    robots: state.requestRobots.robots,
+    isPending: state.requestRobots.isPending,
+    error: state.requestRobots.error
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSearchChange: event => dispatch(setSearchField(event.target.value))
+    onSearchChange: event => dispatch(setSearchField(event.target.value)),
+    onRequestRobots: () => dispatch(requestRobots())
   };
 };
 
@@ -25,15 +29,11 @@ class App extends Component {
   };
 
   componentDidMount() {
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then(res => res.json())
-      .then(data => this.setState({ robots: data }))
-      .catch(err => console.error(err));
+    this.props.onRequestRobots();
   }
 
   render() {
-    const { onSearchChange, searchField } = this.props;
-    const { robots } = this.state;
+    const { onSearchChange, searchField, robots, isPending } = this.props;
     const filterRobots = robots.filter(robot => {
       return robot.name.toLowerCase().includes(searchField.toLowerCase());
     });
@@ -41,11 +41,7 @@ class App extends Component {
       <div>
         <Navbar />
         <SearchBar onSearchChange={onSearchChange} />
-        {!this.state.robots.length ? (
-          <Loading />
-        ) : (
-          <RoboCardList robots={filterRobots} />
-        )}
+        {isPending ? <Loading /> : <RoboCardList robots={filterRobots} />}
       </div>
     );
   }
