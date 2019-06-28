@@ -4,44 +4,50 @@ import SearchBar from '../components/SearchBar';
 import RoboCardList from '../components/RoboCardList';
 import Loading from '../components/Loading';
 
+import { setSearchField, requestRobots } from '../actions';
+import { connect } from 'react-redux';
+
+const mapStateToProps = state => {
+  return {
+    searchField: state.searchRobots.searchField,
+    robots: state.requestRobots.robots,
+    isPending: state.requestRobots.isPending,
+    error: state.requestRobots.error
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onSearchChange: event => dispatch(setSearchField(event.target.value)),
+    onRequestRobots: () => dispatch(requestRobots())
+  };
+};
+
 class App extends Component {
   state = {
-    robots: [],
-    searchField: ''
+    robots: []
   };
 
   componentDidMount() {
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then(res => res.json())
-      .then(data => this.setState({ robots: data }))
-      .catch(err => console.error(err));
+    this.props.onRequestRobots();
   }
 
-  onSearchChange = e => {
-    this.setState({
-      searchField: e.target.value
-    });
-  };
-
   render() {
-    const filterRobots = this.state.robots.filter(robot => {
-      return robot.name
-        .toLowerCase()
-        .includes(this.state.searchField.toLowerCase());
+    const { onSearchChange, searchField, robots, isPending } = this.props;
+    const filterRobots = robots.filter(robot => {
+      return robot.name.toLowerCase().includes(searchField.toLowerCase());
     });
-
     return (
       <div>
         <Navbar />
-        <SearchBar onSearchChange={this.onSearchChange} />
-        {!this.state.robots.length ? (
-          <Loading />
-        ) : (
-          <RoboCardList robots={filterRobots} />
-        )}
+        <SearchBar onSearchChange={onSearchChange} />
+        {isPending ? <Loading /> : <RoboCardList robots={filterRobots} />}
       </div>
     );
   }
 }
 
-export default App;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
